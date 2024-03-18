@@ -1,0 +1,87 @@
+<h2 class="text-center mb-5 mt-3">Angular Dashboard</h2>
+<ul class="dashboard-label">
+    <li><button class="active">Department</button></li>
+    <li><button>Employee</button></li>
+</ul>
+
+<div class="dashboard-feature">
+    <div class="dashboard-feature__area">
+        <h3>Create Department <button class="btn btn-dark" (click)="open(demoModal)">Create</button></h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr *ngFor="let item of departmentList">
+                  <th>{{ item.id }}</th>
+                  <td>{{ item.name }}</td>
+                  <td>
+                    <a class="btn btn-primary" [routerLink]="['/department-details/' + item.id]">Details</a>
+                    <button class="btn" (click)="deleteDepartment(item.id)"><i class="bi bi-trash3"></i></button>
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <div class="dashboard-feature__list">
+            <div class="dashboard-feature__item">
+                <div class="dashboard-feature__item--inner">
+                    <figure>
+                        <img src="assets/images/demo.jpeg" alt="Image">
+                    </figure>
+                    <h3>Name</h3>
+                    <a [routerLink]="['/details/:id']">See More</a>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+<ng-template #demoModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Create Department</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click'); departmentForm.reset()"></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+                <label for="departmentName" class="form-label">Name</label>
+                <input type="text" class="form-control" id="departmentName" formControlName="name">
+                <div class="invalid-feedback" *ngIf="departmentForm.get('name').invalid && 
+                departmentForm.get('name').errors && 
+                (departmentForm.get('name').dirty || departmentForm.get('name').touched)">
+                    Please add a name.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="departmentMember" class="form-label">Member</label>
+                <input type="number" class="form-control" id="departmentMember" formControlName="member">
+                <div class="invalid-feedback" *ngIf="departmentForm.get('member').invalid && 
+                departmentForm.get('member').errors && 
+                (departmentForm.get('member').dirty || departmentForm.get('member').touched)">
+                    Please add member.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="departmentDetails" class="form-label">Details</label>
+                <input type="text" class="form-control" id="departmentDetails" formControlName="details">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" [disabled]="departmentForm.invalid" (click)="onSubmit()">Save changes</button>
+    </div>
+</ng-template>
+
+
+<!-- <div class="dashboard-form__modal">
+    <div class="dashboard-form__modal--box">
+        <div class="dashboard-form__modal--header">
+            <h3>Create Department</h3>
+            <button>x</button>
+        </div>
+    </div>
+</div> -->

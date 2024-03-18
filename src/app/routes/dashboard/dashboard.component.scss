@@ -1,0 +1,13 @@
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #000000;
+    padding-bottom: 20px;
+
+    h2 {
+        margin-bottom: 0;
+    }
+}
