@@ -3,6 +3,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiCallService } from '../../shared/services/api-call/api-call.service';
 import { SubSink } from 'subsink';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/app.states';
+import { logIn } from '../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -14,11 +17,11 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   loginForm: any;
-  subs = new SubSink();
 
   constructor(private fb: FormBuilder,
     private apiService: ApiCallService,
-    private router: Router) {
+    private router: Router,
+    private store: Store<AppState>) {
 
   }
 
@@ -30,16 +33,11 @@ export class LoginComponent implements OnInit {
   }
 
   submit(): void {
-    let data = {
+    const data: any = {
       "email": this.loginForm.value.email,
       "password": this.loginForm.value.password
     }
-    this.subs.sink = this.apiService.login(data).subscribe((res: any) => {
-      if (res.statusCode == 200) {
-        this.router.navigate(['/dashboard'])
-      }
-      console.log(res)
-    })
+    this.store.dispatch(logIn(data))
   }
 
 }

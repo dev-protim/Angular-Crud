@@ -7,7 +7,7 @@ export const DashboardRoute: Routes = [
         component: DashboardComponent
     },
     {
-        path: 'department-details/:id',
+        path: 'dashboard/department-details/:id',
         loadComponent: () => import('./slugs/department-details/department-details.component').then((m) => m.DepartmentDetailsComponent)
     }
 ]

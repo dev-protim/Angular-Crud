@@ -5,7 +5,13 @@ import { RouterModule } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubSink } from 'subsink';
 import { ApiCallService } from '../../../../shared/services/api-call/api-call.service';
-import { Department } from './department';
+// import { Department } from './department';
+import { loadDepartments } from '../../../../store/actions/department.actions';
+import { selectDepartmentError, selectDepartmentLoading, selectDepartments } from '../../../../store/selectors/department.selectors';
+import { Observable } from 'rxjs';
+import { Department } from '../../../../models/department';
+import { Store } from '@ngrx/store';
+
 
 @Component({
   selector: 'app-list',
@@ -18,11 +24,12 @@ export class ListComponent implements OnInit {
 
   departmentForm: any;
   subs = new SubSink();
-  departmentList: Department[] = []
+  departmentList$: Observable<Department[]> = this.store.select(selectDepartments);
 
   constructor(private modalService: NgbModal,
     private apiService: ApiCallService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private store: Store) {
   }
 
   ngOnInit(): void {
@@ -35,16 +42,7 @@ export class ListComponent implements OnInit {
   }
 
   getAllDepartment(): void {
-    this.subs.sink = this.apiService.getDepartments().subscribe(
-      (res: any) => {
-        res.forEach((element: any) => {
-          this.departmentList.push({
-            id: element.DepartmentId,
-            name: element.DepartmentName
-          })
-        });
-      }
-    )
+    this.store.dispatch(loadDepartments())
   }
 
   public open(modal: any): void {
@@ -65,7 +63,7 @@ export class ListComponent implements OnInit {
             "id": res.data.DepartmentId,
             "name": res.data.DepartmentName
           }
-          this.departmentList = [...this.departmentList, data];
+          // this.departmentList = [...this.departmentList, data];
         }
       })
       this.modalService.dismissAll();
@@ -76,11 +74,11 @@ export class ListComponent implements OnInit {
   deleteDepartment(id: number): void {
     this.subs.sink = this.apiService.deleteDepartment(id).subscribe((res: any) => {
       if (res.statusCode === 200) {
-        var index = this.departmentList.map(x => {
-          return x.id;
-        }).indexOf(id);
+        // var index = this.departmentList.map(x => {
+        //   return x.id;
+        // }).indexOf(id);
         
-        this.departmentList.splice(index, 1);
+        // this.departmentList.splice(index, 1);
       }
     })
   }

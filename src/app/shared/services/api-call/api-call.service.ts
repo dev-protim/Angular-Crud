@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class ApiCallService {
 
   constructor(private httpClient: HttpClient) { }
 
-  login(body: any): any {
+  login(body: any): Observable<any> {
     return this.httpClient.post(`${this.url}/api/login`, body).pipe(
 			map((res: any) => {
 				return res;
@@ -27,7 +27,8 @@ export class ApiCallService {
 		);
   }
 
-  getDepartments(): any {
+  getDepartments(): Observable<any> {
+    console.log('working')
     return this.httpClient.get(`${this.url}/department`).pipe(
 			map(res => res)
 		);
